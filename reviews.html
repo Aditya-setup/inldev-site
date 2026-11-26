@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reviews — INL Dev Studio</title>
+<link rel="canonical" href="https://inldev.in/reviews.html">
+<meta property="og:title" content="Reviews — INL Dev Studio">
+<meta property="og:description" content="Real reviews of EZStream, INL Boost, INL Launcher, INL Cam and SnapSolve from our users.">
+<meta property="og:url" content="https://inldev.in/reviews.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="INL Dev Studio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Real reviews of EZStream, INL Boost, INL Launcher, INL Cam and SnapSolve from our users.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--acc:#FF6A00;--acc2:#FFB347;--bg:#07080B;--line:#1F232B;--txt:#ECEEF2;--mut:#9AA1AD}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,sans-serif}
+a{color:inherit;text-decoration:none}.wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(900px 500px at 70% 10%,rgba(255,106,0,.14),transparent 60%),linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/48px 48px}
+main,header,footer{position:relative;z-index:1}
+header{position:sticky;top:0;z-index:20;background:rgba(7,8,11,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{display:flex;align-items:center;gap:12px;font-family:'Chakra Petch';font-weight:700;letter-spacing:.12em}
+nav{display:flex;gap:30px;font-family:'Chakra Petch';font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+nav a{color:var(--mut);padding:6px 0;border-bottom:2px solid transparent}nav a:hover,nav a.on{color:#fff;border-color:var(--acc)}
+.btn{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;font-family:'Chakra Petch';font-weight:700;letter-spacing:.12em;font-size:13px;text-transform:uppercase;border:0;cursor:pointer;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.btn.p{background:linear-gradient(90deg,#E85D00,var(--acc));color:#0A0A0A}.btn.g{border:1px solid var(--acc);color:var(--acc2);background:rgba(255,106,0,.06)}
+.tag{display:inline-flex;gap:10px;align-items:center;font-family:'JetBrains Mono';font-size:12px;color:var(--acc2);letter-spacing:.2em;border:1px solid rgba(255,106,0,.4);padding:6px 12px}
+.tag i{width:8px;height:8px;background:var(--acc);display:inline-block}
+h1{font-family:'Chakra Petch';font-size:68px;line-height:.95;margin:18px 0 14px;font-style:italic}h1 b{color:var(--acc)}
+.lead{color:var(--mut);font-size:17px;line-height:1.65;max-width:620px}
+.panel{position:relative;background:linear-gradient(180deg,rgba(18,20,26,.92),rgba(11,12,16,.92));border:1px solid var(--line);clip-path:polygon(16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 16px)}
+.panel:before{content:'';position:absolute;left:16px;top:0;width:40%;height:2px;background:var(--acc)}
+.top{display:grid;grid-template-columns:1fr 1.1fr;gap:28px;margin:30px 0}
+.sum{padding:30px}.big{font-family:'Chakra Petch';font-size:72px;font-weight:700;color:var(--acc)}.stars{color:var(--acc);letter-spacing:3px;font-size:20px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 0}.filters button{font-family:'JetBrains Mono';font-size:12px;background:none;color:var(--mut);border:1px solid var(--line);padding:6px 10px;cursor:pointer}.filters button.on{color:var(--acc2);border-color:var(--acc)}
+form{padding:30px;display:grid;gap:12px}form h2{font-family:'Chakra Petch';font-style:italic;margin:0;font-size:28px}
+input,select,textarea{background:#0A0B0E;border:1px solid var(--line);color:var(--txt);padding:12px;font:inherit;width:100%}textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc)}
+.rate{display:flex;gap:6px;font-size:28px;cursor:pointer;color:#3A3F4A}.rate span.on{color:var(--acc)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.msg{font-family:'JetBrains Mono';font-size:13px;color:var(--acc2);min-height:18px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.rv{padding:24px;display:flex;flex-direction:column;gap:10px}.rv .meta{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:11px;color:#6B7280;letter-spacing:.1em}
+.rv p{margin:0;color:#C9CDD5;line-height:1.6}.rv b{font-family:'Chakra Petch';font-size:18px}.app{color:var(--acc2)}
+.empty{grid-column:1/-1;padding:40px;text-align:center;color:var(--mut)}
+footer{border-top:1px solid var(--line);margin-top:70px;padding:28px 0;color:#6B7280;font-size:13px}footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+@media(max-width:960px){.top{grid-template-columns:1fr}.grid{grid-template-columns:1fr}nav{display:none}h1{font-size:48px}.wrap{padding:0 20px}.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<header><div class="wrap bar">
+  <a class="logo" href="index.html"><svg width="26" height="26" viewBox="0 0 28 28"><path d="M14 2 L26 14 L14 26 L2 14 Z" fill="none" stroke="#FF6A00" stroke-width="2"/><path d="M14 8 L20 14 L14 20 L8 14 Z" fill="#FF6A00"/></svg>INL DEV STUDIO</a>
+  <nav><a href="index.html">Home</a><a href="index.html#games">Games</a><a href="apps.html">Apps</a><a class="on" href="reviews.html">Reviews</a><a href="pricing.html">Pricing</a><a href="careers.html">Careers</a></nav>
+  <a class="btn g" href="index.html#join">Join Discord</a>
+</div></header>
+
+<main class="wrap">
+  <section style="padding:60px 0 0">
+    <span class="tag"><i></i>FIELD REPORTS · REAL USERS</span>
+    <h1>WHAT PLAYERS <b>SAY</b>.</h1>
+    <p class="lead">Honest reviews from people who use our apps. Every review is checked by a person before it appears. We never edit or delete a review just because it is negative.</p>
+  </section>
+
+  <section class="top">
+    <div class="panel sum">
+      <div style="font-family:'JetBrains Mono';font-size:12px;color:#6B7280;letter-spacing:.14em">AVERAGE RATING</div>
+      <div class="big" id="avg">—</div>
+      <div class="stars" id="avgStars">☆☆☆☆☆</div>
+      <div style="color:var(--mut);margin-top:6px" id="count">Loading reviews…</div>
+      <div class="filters" id="filters"></div>
+    </div>
+    <form class="panel" id="f">
+      <h2>WRITE A REVIEW</h2>
+      <div class="row2">
+        <input id="name" maxlength="40" placeholder="Your name or gamer tag" required>
+        <select id="app" required><option>EZStream</option><option>INL Boost</option><option>INL Launcher</option><option>INL Cam</option><option>SnapSolve</option></select>
+      </div>
+      <div class="rate" id="rate"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <textarea id="text" minlength="10" maxlength="600" placeholder="What did you like? What should we fix?" required></textarea>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><button class="btn p" type="submit">Submit review</button><span class="msg" id="msg"></span></div>
+    </form>
+  </section>
+
+  <section class="grid" id="list"><div class="empty">Loading…</div></section>
+</main>
+
+<footer><div class="wrap">
+  <span>© 2026 INL Dev Studio · India</span>
+  <span><a href="apps.html">Apps</a> · <a href="pricing.html">Pricing</a> · <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="contact.html">Contact</a></span>
+</div></footer>
+
+<script>
+const BASE='https://firestore.googleapis.com/v1/projects/inl-multistream/databases/(default)/documents';
+let all=[],filter='All',rating=0;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const st=n=>'★'.repeat(n)+'☆'.repeat(5-n);
+function render(){
+  const L=filter==='All'?all:all.filter(r=>r.app===filter);
+  const avg=L.length?L.reduce((a,r)=>a+r.rating,0)/L.length:0;
+  document.getElementById('avg').textContent=L.length?avg.toFixed(1):'—';
+  document.getElementById('avgStars').textContent=st(Math.round(avg));
+  document.getElementById('count').textContent=L.length?`${L.length} review${L.length>1?'s':''}`:'No reviews yet — be the first.';
+  document.getElementById('list').innerHTML=L.length?L.map(r=>`<article class="panel rv"><div class="meta"><span class="app">${esc(r.app).toUpperCase()}</span><span>${r.date}</span></div><div class="stars">${st(r.rating)}</div><p>${esc(r.text)}</p><b>— ${esc(r.name)}</b></article>`).join(''):'<div class="panel empty">No reviews yet. Used one of our apps? Write the first review above.</div>';
+  const apps=['All','EZStream','INL Boost','INL Launcher','INL Cam','SnapSolve'];
+  document.getElementById('filters').innerHTML=apps.map(a=>`<button type="button" class="${a===filter?'on':''}" data-a="${a}">${a.toUpperCase()}</button>`).join('');
+  document.querySelectorAll('#filters button').forEach(b=>b.onclick=()=>{filter=b.dataset.a;render()});
+}
+async function load(){
+  try{
+    const r=await fetch(BASE+':runQuery',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({structuredQuery:{from:[{collectionId:'reviews'}],where:{fieldFilter:{field:{fieldPath:'approved'},op:'EQUAL',value:{booleanValue:true}}},limit:300}})});
+    const j=await r.json();
+    all=(Array.isArray(j)?j:[]).filter(x=>x.document).map(x=>{const f=x.document.fields;const t=f.created?.timestampValue||x.document.createTime;
+      return{name:f.name.stringValue,app:f.app.stringValue,rating:+f.rating.integerValue,text:f.text.stringValue,t,date:new Date(t).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}}).sort((a,b)=>b.t.localeCompare(a.t));
+  }catch(e){all=[]}
+  render();
+}
+const stars=[...document.querySelectorAll('#rate span')];
+stars.forEach((s,i)=>{s.onclick=()=>{rating=i+1;stars.forEach((x,k)=>x.classList.toggle('on',k<rating))}});
+document.getElementById('f').onsubmit=async e=>{
+  e.preventDefault();const m=document.getElementById('msg');
+  if(!rating){m.textContent='Pick a star rating.';return}
+  const name=document.getElementById('name').value.trim(),text=document.getElementById('text').value.trim(),app=document.getElementById('app').value;
+  if(text.length<10){m.textContent='Write at least 10 characters.';return}
+  if(localStorage&&(()=>{try{return localStorage.getItem('inl_rev_'+app)}catch(_){return null}})()){m.textContent='You already reviewed this app. Thanks!';return}
+  m.textContent='Sending…';
+  const id='r'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+  const body={writes:[{update:{name:`projects/inl-multistream/databases/(default)/documents/reviews/${id}`,fields:{name:{stringValue:name},app:{stringValue:app},rating:{integerValue:String(rating)},text:{stringValue:text},approved:{booleanValue:false}}},updateTransforms:[{fieldPath:'created',setToServerValue:'REQUEST_TIME'}],currentDocument:{exists:false}}]};
+  try{
+    const r=await fetch(BASE+':commit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!r.ok)throw 0;
+    try{localStorage.setItem('inl_rev_'+app,'1')}catch(_){}
+    e.target.reset();rating=0;stars.forEach(x=>x.classList.remove('on'));
+    m.textContent='Thanks! Your review will appear after a quick check.';
+  }catch(_){m.textContent='Could not send. Try again in a minute.'}
+};
+load();
+</script>
+</body>
+</html>
