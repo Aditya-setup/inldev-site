@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apps — INL Dev Studio</title>
+<link rel="canonical" href="https://inldev.in/apps.html">
+<meta property="og:title" content="Apps — INL Dev Studio">
+<meta property="og:description" content="Download INL Launcher, EZStream, INL Boost, INL Cam and SnapSolve from INL Dev Studio.">
+<meta property="og:url" content="https://inldev.in/apps.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="INL Dev Studio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Download INL Launcher, EZStream, INL Boost, INL Cam and SnapSolve from INL Dev Studio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--acc:#FF6A00;--acc2:#FFB347;--bg:#07080B;--panel:#0E1014;--line:#1F232B;--txt:#ECEEF2;--mut:#9AA1AD}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+/* background: grid + glow + scanlines */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+ background:radial-gradient(900px 500px at 70% 10%,rgba(255,106,0,.16),transparent 60%),radial-gradient(700px 400px at 10% 90%,rgba(255,106,0,.08),transparent 60%),
+ linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/48px 48px}
+.bg:after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0 1px,transparent 1px 3px)}
+main,header,footer{position:relative;z-index:1}
+/* header */
+header{position:sticky;top:0;z-index:20;background:rgba(7,8,11,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{display:flex;align-items:center;gap:12px;font-family:'Chakra Petch';font-weight:700;letter-spacing:.12em}
+nav{display:flex;gap:30px;font-family:'Chakra Petch';font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+nav a{color:var(--mut);padding:6px 0;border-bottom:2px solid transparent}nav a:hover,nav a.on{color:#fff;border-color:var(--acc)}
+.btn{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;font-family:'Chakra Petch';font-weight:700;letter-spacing:.12em;font-size:13px;text-transform:uppercase;
+ clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);transition:.2s}
+.btn.p{background:linear-gradient(90deg,#E85D00,var(--acc));color:#0A0A0A;box-shadow:0 0 22px rgba(255,106,0,.35)}.btn.p:hover{filter:brightness(1.12)}
+.btn.g{border:1px solid var(--acc);color:var(--acc2);background:rgba(255,106,0,.06)}.btn.g:hover{background:rgba(255,106,0,.16)}
+/* hero */
+.hero{padding:70px 0 40px;display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+.tag{display:inline-flex;gap:10px;align-items:center;font-family:'JetBrains Mono';font-size:12px;color:var(--acc2);letter-spacing:.2em;border:1px solid rgba(255,106,0,.4);padding:6px 12px}
+.tag i{width:8px;height:8px;background:var(--acc);box-shadow:0 0 10px var(--acc);display:inline-block}
+h1{font-family:'Chakra Petch';font-size:76px;line-height:.95;margin:18px 0 14px;font-style:italic;letter-spacing:.01em}
+h1 b{color:var(--acc);text-shadow:0 0 30px rgba(255,106,0,.45)}
+.lead{color:var(--mut);font-size:17px;line-height:1.65;max-width:560px}
+.ghost{font-family:'Chakra Petch';font-weight:700;font-size:170px;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,106,0,.25);text-align:right;user-select:none}
+/* HUD panel */
+.panel{position:relative;background:linear-gradient(180deg,rgba(18,20,26,.92),rgba(11,12,16,.92));border:1px solid var(--line);
+ clip-path:polygon(16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 16px);transition:.25s}
+.panel:before{content:'';position:absolute;left:16px;top:0;width:40%;height:2px;background:var(--acc);box-shadow:0 0 12px var(--acc)}
+.panel:hover{border-color:rgba(255,106,0,.55);transform:translateY(-3px)}
+.corner{position:absolute;width:14px;height:14px;border:2px solid var(--acc)}.c1{right:10px;top:10px;border-left:0;border-bottom:0}.c2{left:10px;bottom:10px;border-right:0;border-top:0}
+.meta{display:flex;justify-content:space-between;font-family:'JetBrains Mono';font-size:11px;color:#6B7280;letter-spacing:.12em}
+.stripes{width:46px;height:8px;background:repeating-linear-gradient(-45deg,var(--acc) 0 3px,transparent 3px 7px);opacity:.7}
+/* launcher feature */
+.launch{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;padding:34px 38px;margin:10px 0 34px}
+.launch h2{font-family:'Chakra Petch';font-size:44px;font-style:italic;margin:8px 0 8px}
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.card{padding:26px 26px 22px;display:flex;flex-direction:column;gap:12px;min-height:270px}
+.card .code{color:var(--acc2)}
+.card h3{font-family:'Chakra Petch';font-size:30px;margin:2px 0 0;font-style:italic;letter-spacing:.02em}
+.card p{margin:0;color:var(--mut);line-height:1.6;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{font-family:'JetBrains Mono';font-size:11px;color:var(--acc2);border:1px solid rgba(255,179,71,.35);padding:4px 8px;letter-spacing:.06em}
+.plat{font-family:'JetBrains Mono';font-size:12px;letter-spacing:.14em;color:#fff;background:rgba(255,106,0,.14);border:1px solid rgba(255,106,0,.4);padding:3px 10px}
+.free{background:#22C55E;color:#04140A;border:0;font-weight:700}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.prog{height:4px;background:#1C1F26;margin-top:10px;overflow:hidden}.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));box-shadow:0 0 8px var(--acc)}
+/* coming later */
+.later{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.mini{padding:18px 18px 16px}.mini h4{font-family:'Chakra Petch';font-size:19px;margin:6px 0 6px;font-style:italic}.mini p{margin:0;color:#7C8492;font-size:13px;line-height:1.5}
+.sec{display:flex;align-items:center;gap:14px;margin:54px 0 18px;font-family:'Chakra Petch';letter-spacing:.24em;font-size:14px;color:var(--mut)}
+.sec:after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,106,0,.5),transparent)}
+.sec b{color:var(--acc)}
+footer{border-top:1px solid var(--line);margin-top:70px;padding:28px 0;color:#6B7280;font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}footer a:hover{color:var(--acc2)}
+@media (max-width:960px){.hero{grid-template-columns:1fr}.ghost{display:none}h1{font-size:54px}.grid{grid-template-columns:1fr}.later{grid-template-columns:repeat(2,1fr)}.launch{grid-template-columns:1fr}nav{display:none}.wrap{padding:0 20px}}
+@media (max-width:520px){.later{grid-template-columns:1fr}h1{font-size:44px}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<header><div class="wrap bar">
+  <a class="logo" href="index.html"><svg width="26" height="26" viewBox="0 0 28 28"><path d="M14 2 L26 14 L14 26 L2 14 Z" fill="none" stroke="#FF6A00" stroke-width="2"/><path d="M14 8 L20 14 L14 20 L8 14 Z" fill="#FF6A00"/></svg>INL DEV STUDIO</a>
+  <nav><a href="index.html">Home</a><a href="index.html#games">Games</a><a class="on" href="apps.html">Apps</a><a href="reviews.html">Reviews</a><a href="pricing.html">Pricing</a><a href="careers.html">Careers</a></nav>
+  <a class="btn g" href="index.html#join">Join Discord</a>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <span class="tag mono"><i></i>SECTOR 03 · APPS ONLINE</span>
+      <h1>TOOLS BUILT<br>FOR <b>GAMERS</b>.</h1>
+      <p class="lead">Stream, boost and create — made in India by INL Dev Studio. Download the <b>INL Launcher</b> once — then install and update every INL app (EZStream, INL Boost and our games) from inside it.</p>
+    </div>
+    <div class="ghost">APPS</div>
+  </section>
+
+  <section class="panel launch" id="launcher"><span class="corner c1"></span><span class="corner c2"></span>
+    <div>
+      <div class="meta"><span>A-00 · WINDOWS 10 / 11</span><span class="stripes"></span></div>
+      <h2>INL LAUNCHER</h2>
+      <p class="lead" style="margin:0">One download for everything we make. Install, update and launch EZStream, INL Boost and our games in one click — no separate installers.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+      <a class="btn p" href="https://github.com/Aditya-setup/inl-downloads/releases/download/v1.0/INL-Launcher.exe">⬇ Download Launcher</a>
+      <span class="mono" style="font-size:11px;color:#6B7280">FREE · 0.5 MB</span>
+    </div>
+  </section>
+
+  <div class="sec"><b>//</b> AVAILABLE NOW</div>
+  <section class="grid">
+    <article class="panel card" id="multistream"><span class="corner c1"></span>
+      <div class="meta"><span class="code">A-01</span><span class="plat">WINDOWS · v2.3</span></div>
+      <h3>EZSTREAM</h3>
+      <p>Go live on YouTube, Twitch and Kick at the same time. Real window capture, GPU encoding, smart bitrate, overlays, alerts and highlights.</p>
+      <div class="chips"><span class="chip">GPU ENCODER</span><span class="chip">WINDOW CAPTURE</span><span class="chip">VERTICAL 9:16</span><span class="chip">OVERLAYS</span></div>
+      <div class="acts"><a class="btn p" href="https://github.com/Aditya-setup/inl-downloads/releases/download/v1.0/INL-Launcher.exe">⬇ Get it in INL Launcher</a><a class="btn g" href="pricing.html">Pro ₹99/mo</a><a class="btn g" href="multistream-updates.html">What's new</a></div>
+    </article>
+    <article class="panel card" id="boost"><span class="corner c1"></span>
+      <div class="meta"><span class="code">A-02</span><span class="plat free">100% FREE</span></div>
+      <h3>INL BOOST</h3>
+      <p>More FPS, less stutter. Eco / Studio / Esports modes, auto Game Boost, ProBalance for background apps, CPU core control and thermals.</p>
+      <div class="chips"><span class="chip">GAME BOOST</span><span class="chip">PROBALANCE</span><span class="chip">THERMALS</span></div>
+      <div class="acts"><a class="btn p" href="https://github.com/Aditya-setup/inl-downloads/releases/download/v1.0/INL-Launcher.exe">⬇ Get it in INL Launcher</a></div>
+    </article>
+    <article class="panel card" id="inlcam"><span class="corner c1"></span>
+      <div class="meta"><span class="code">A-03</span><span class="plat">ANDROID · FREE</span></div>
+      <h3>INL CAM</h3>
+      <p>Turn your phone into a wireless webcam for EZStream. Scan the QR code in the app and you are on stream.</p>
+      <div class="chips"><span class="chip">WIRELESS</span><span class="chip">QR PAIRING</span></div>
+      <div class="acts"><a class="btn p" href="https://github.com/Aditya-setup/inl-downloads/releases/download/v1.0/INL-Cam.apk">⬇ Download for Android</a></div>
+    </article>
+    <article class="panel card" id="snapsolve"><span class="corner c1"></span>
+      <div class="meta"><span class="code">A-04</span><span class="plat">ANDROID · FREE</span></div>
+      <h3>SNAPSOLVE</h3>
+      <p>Snap a question, get a step-by-step AI explanation. Quizzes, notes and a study library from Class 1 to JEE, NEET and UPSC.</p>
+      <div class="chips"><span class="chip">AI SOLVER</span><span class="chip">QUIZZES</span><span class="chip">NOTES</span></div>
+      <div class="acts"><a class="btn p" href="https://github.com/Aditya-setup/inl-downloads/releases/download/v1.0/SnapSolve.apk">⬇ Download for Android</a></div>
+    </article>
+  </section>
+
+  <div class="sec"><b>//</b> COMING LATER</div>
+  <section class="later">
+    <div class="panel mini"><div class="meta"><span>B-01</span><span>IN DEVELOPMENT</span></div><h4>KOVA</h4><p>Gamer community, squads and marketplace — on Android, web and Windows.</p><div class="prog"><i style="width:35%"></i></div></div>
+    <div class="panel mini"><div class="meta"><span>B-02</span><span>PLANNED</span></div><h4>CREATORKIT</h4><p>AI help for YouTubers: titles, scripts, tags and thumbnail text.</p><div class="prog"><i style="width:10%"></i></div></div>
+    <div class="panel mini"><div class="meta"><span>B-03</span><span>PROTOTYPE</span></div><h4>WAVR</h4><p>Music streaming, built our way. Our game soundtracks will live here.</p><div class="prog"><i style="width:20%"></i></div></div>
+    <div class="panel mini"><div class="meta"><span>B-04</span><span>PLANNED</span></div><h4>STUDY SUITE</h4><p>More AI study apps on one login, built on the SnapSolve engine.</p><div class="prog"><i style="width:15%"></i></div></div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <span>© 2026 INL Dev Studio · India</span>
+  <span><a href="pricing.html">Pricing</a> · <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="refund.html">Refunds</a> · <a href="contact.html">Contact</a></span>
+</div></footer>
+</body>
+</html>
