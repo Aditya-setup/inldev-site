@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="data:,">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nautical Knights — 7v7 Mobile Naval Warfare</title>
+<link rel="canonical" href="https://inldev.in/nautical-knights/">
+<meta property="og:title" content="Nautical Knights — 7v7 Mobile Naval Warfare">
+<meta property="og:description" content="Nautical Knights - a 7v7 naval warfare multiplayer game by INL Dev Studio, India.">
+<meta property="og:url" content="https://inldev.in/nautical-knights/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="INL Dev Studio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Nautical Knights - a 7v7 naval warfare multiplayer game by INL Dev Studio, India.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Saira+Condensed:wght@300;600;700&family=Saira:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #0c0d0e; color: #eef0ee; font-family: 'Saira', sans-serif; overflow-x: hidden; }
+
+  /* ---- ANIMATIONS ---- */
+  @keyframes nke-pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+  @keyframes nke-marq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* ---- NAV ---- */
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:14px 40px; background:rgba(12,13,14,.85); backdrop-filter:blur(18px); border-bottom:1px solid rgba(255,255,255,.07); }
+  .nav-logo { text-decoration:none; display:flex; align-items:center; gap:12px; }
+  .nav-logo-badge { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; background:#FF6A00; color:#0c0d0e; font-family:'Saira Condensed',sans-serif; font-weight:700; font-size:15px; flex-shrink:0; }
+  .nav-logo-text { font-family:'Saira Condensed',sans-serif; font-weight:600; font-size:19px; letter-spacing:.14em; color:#eef0ee; text-transform:uppercase; }
+  .nav-links { display:flex; align-items:center; gap:30px; }
+  .nav-links a { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#9aa09c; text-decoration:none; }
+  .nav-links .nav-cta { color:#0c0d0e; background:#FF6A00; padding:9px 18px; font-weight:500; }
+  .nav-hamburger { display:none; background:none; border:none; cursor:pointer; padding:4px; flex-direction:column; gap:5px; }
+  .nav-hamburger span { display:block; width:22px; height:2px; background:#eef0ee; transition:transform .2s,opacity .2s; }
+  .nav-mobile { display:none; }
+
+  /* ---- HERO ---- */
+  .hero { position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:flex-end; overflow:hidden; background:#0c0d0e; }
+  .hero-bg { position:absolute; inset:0; background-image:url('jet-hero.jpg'); background-size:cover; background-position:center 38%; background-repeat:no-repeat; filter:saturate(1.08) contrast(1.04); transform:scale(1.02); }
+  .hero-bg-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(255,106,0,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,106,0,.035) 1px,transparent 1px); background-size:60px 60px; mix-blend-mode:overlay; opacity:.5; }
+  .hero-overlay { position:absolute; inset:0; background:linear-gradient(0deg,#0c0d0e 2%,rgba(12,13,14,.4) 34%,rgba(12,13,14,.05) 58%,rgba(12,13,14,.55) 100%); }
+  .hero-overlay2 { position:absolute; inset:0; background:linear-gradient(90deg,rgba(12,13,14,.65) 0%,transparent 40%),linear-gradient(200deg,rgba(10,26,46,.35) 0%,transparent 55%); }
+  .hero-overlay3 { position:absolute; inset:0; background:radial-gradient(ellipse 70% 50% at 50% 38%,rgba(255,106,0,.05),transparent 70%); mix-blend-mode:screen; }
+  .hero-readout { position:absolute; top:96px; right:40px; z-index:3; text-align:right; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.16em; color:#9aa09c; line-height:1.9; }
+  .hero-content { position:relative; z-index:3; padding:0 40px 56px; max-width:1340px; margin:0 auto; width:100%; }
+  .hero-eyebrow { display:flex; align-items:center; gap:14px; margin-bottom:22px; }
+  .hero-dot { display:inline-block; width:8px; height:8px; background:#FF6A00; animation:nke-pulse 1.8s infinite; flex-shrink:0; }
+  .hero-tag { font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.28em; text-transform:uppercase; color:#FF6A00; }
+  .hero-title { font-family:'Saira Condensed',sans-serif; font-weight:700; font-size:clamp(72px,12vw,184px); line-height:.82; letter-spacing:.005em; text-transform:uppercase; color:#fff; }
+  .hero-bottom { display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:28px; margin-top:28px; }
+  .hero-desc { font-family:'Saira',sans-serif; font-weight:300; font-size:18px; line-height:1.65; color:#b6bcb8; max-width:480px; }
+  .btn-primary { text-decoration:none; font-family:'JetBrains Mono',monospace; font-weight:500; padding:16px 32px; background:#FF6A00; color:#0c0d0e; font-size:13px; letter-spacing:.14em; text-transform:uppercase; display:inline-block; }
+  .hero-marq { position:relative; z-index:3; border-top:1px solid rgba(255,255,255,.1); border-bottom:1px solid rgba(255,255,255,.1); overflow:hidden; background:rgba(12,13,14,.4); }
+  .hero-marq-inner { display:flex; width:max-content; animation:nke-marq 26s linear infinite; padding:13px 0; }
+  .hero-marq-text { font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:#9aa09c; white-space:nowrap; }
+
+  /* ---- SOUND TOGGLE ---- */
+  .sound-toggle { position:absolute; bottom:24px; right:24px; z-index:5; display:flex; align-items:center; gap:8px; background:rgba(12,13,14,.6); border:1px solid rgba(255,255,255,.15); backdrop-filter:blur(8px); color:#eef0ee; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; padding:9px 14px; cursor:pointer; transition:border-color .2s,color .2s; }
+  .sound-toggle:hover { border-color:#FF6A00; color:#FF6A00; }
+  .sound-toggle.muted #sound-icon { opacity:.4; }
+  .sound-toggle #sound-icon { font-size:13px; animation:nke-pulse 1.8s infinite; }
+  .sound-toggle.muted #sound-icon { animation:none; }
+  @media (max-width:768px) { .sound-toggle { bottom:16px; right:16px; padding:8px 12px; font-size:9px; } }
+
+  /* ---- SECTIONS COMMON ---- */
+  .section { position:relative; z-index:2; background:#0c0d0e; padding:120px 40px; border-bottom:1px solid rgba(255,255,255,.07); }
+  .section-inner { max-width:1340px; margin:0 auto; }
+  .section-header { display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:18px; margin-bottom:64px; }
+  .section-header-left { display:flex; align-items:baseline; gap:18px; }
+  .section-num { font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.2em; color:#FF6A00; }
+  .section-title { font-family:'Saira Condensed',sans-serif; font-weight:700; font-size:clamp(40px,5.5vw,72px); letter-spacing:.01em; text-transform:uppercase; color:#fff; line-height:.92; }
+  .section-note { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.14em; color:#54595a; max-width:300px; text-align:right; }
+
+  /* ---- STAT GRID ---- */
+  .stat-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.08); padding:80px 40px; }
+  .stat-grid-inner { max-width:1340px; margin:0 auto; display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.08); }
+  .stat-cell { background:#0c0d0e; padding:30px 26px; }
+  .stat-label { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.16em; color:#54595a; margin-bottom:14px; }
+  .stat-val { font-family:'Saira Condensed',sans-serif; font-weight:700; font-size:52px; line-height:.9; color:#fff; }
+  .stat-val.accent { color:#FF6A00; }
+
+  /* ---- GRID LAYOUTS ---- */
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.08); }
+  .grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.08); }
+  .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.08); }
+  .card { background:#0c0d0e; padding:44px 36px; }
+  .card-sm { background:#0c0d0e; padding:24px 24px; }
+  .card-mid { background:#0c0d0e; padding:32px 34px; }
+  .card-code { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.16em; color:#FF6A00; margin-bottom:24px; }
+  .card-title { font-family:'Saira Condensed',sans-serif; font-weight:600; font-size:30px; letter-spacing:.02em; text-transform:uppercase; color:#fff; margin-bottom:16px; }
+  .card-body { font-family:'Saira',sans-serif; font-weight:300; font-size:15px; line-height:1.75; color:#9aa09c; }
+  .ship-row { display:flex; align-items:baseline; gap:14px; margin-bottom:8px; }
+  .ship-id { font-family:'JetBrains Mono',monospace; font-size:11px; color:#54595a; }
+  .ship-name { font-family:'Saira Condensed',sans-serif; font-weight:600; font-size:28px; text-transform:uppercase; color:#fff; }
+  .ship-role { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:#FF6A00; }
+  .ship-desc { font-family:'Saira',sans-serif; font-weight:300; font-size:14px; line-height:1.6; color:#9aa09c; }
+  .map-code { font-family:'JetBrains Mono',monospace; font-size:11px; color:#FF6A00; margin-bottom:10px; }
+  .map-name { font-family:'Saira Condensed',sans-serif; font-weight:600; font-size:22px; text-transform:uppercase; color:#fff; margin-bottom:5px; }
+  .map-sub { font-family:'Saira',sans-serif; font-weight:300; font-size:13px; color:#9aa09c; }
+  .special-ship { background:#0c0d0e; border:1px solid rgba(255,106,0,.18); padding:42px 48px; display:flex; align-items:flex-start; gap:40px; }
+  .special-badge { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#0c0d0e; background:#FF6A00; padding:5px 12px; margin-bottom:18px; display:inline-block; }
+
+  /* ---- SIGNUP ---- */
+  .signup { position:relative; z-index:2; background:#0c0d0e; padding:130px 40px 0; }
+  .signup-inner { max-width:920px; margin:0 auto; text-align:center; }
+  .signup-eyebrow { font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:#FF6A00; margin-bottom:18px; }
+  .signup-title { font-family:'Saira Condensed',sans-serif; font-weight:700; font-size:clamp(48px,7vw,104px); letter-spacing:.01em; text-transform:uppercase; color:#fff; line-height:.86; }
+  .signup-desc { font-family:'Saira',sans-serif; font-weight:300; font-size:17px; line-height:1.7; color:#9aa09c; max-width:560px; margin:18px auto 0; }
+  .signup-form { display:flex; gap:1px; max-width:540px; margin:36px auto 0; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.12); }
+  .signup-input { flex:1; background:#0c0d0e; border:none; padding:17px 18px; color:#eef0ee; font-size:13px; font-family:'JetBrains Mono',monospace; letter-spacing:.08em; outline:none; min-width:0; }
+  .signup-input::placeholder { color:#54595a; }
+  .signup-btn { font-family:'JetBrains Mono',monospace; font-weight:500; padding:17px 30px; background:#FF6A00; color:#0c0d0e; font-size:12px; letter-spacing:.14em; text-transform:uppercase; border:none; cursor:pointer; white-space:nowrap; flex-shrink:0; }
+  .signup-btn:hover { background:#d4f060; }
+  .signup-meta { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.12em; color:#54595a; margin-top:16px; }
+  .signup-msg { font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.1em; color:#FF6A00; margin-top:12px; min-height:20px; }
+
+  /* ---- FOOTER ---- */
+  footer { max-width:1340px; margin:100px auto 0; padding:50px 40px 52px; display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:40px; border-top:1px solid rgba(255,255,255,.1); }
+  .footer-brand-name { font-family:'Saira Condensed',sans-serif; font-weight:600; font-size:22px; letter-spacing:.1em; text-transform:uppercase; color:#fff; }
+  .footer-brand-addr { font-family:'Saira',sans-serif; font-weight:300; font-size:13px; line-height:1.7; color:#54595a; max-width:280px; margin:12px 0 0; }
+  .footer-col-head { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#FF6A00; margin-bottom:14px; }
+  .footer-col a { display:block; font-family:'Saira',sans-serif; font-size:14px; color:#9aa09c; text-decoration:none; margin-bottom:9px; }
+  .footer-col a:last-child { margin-bottom:0; }
+  .footer-legal { max-width:1340px; margin:0 auto; padding:28px 40px 40px; border-top:1px solid rgba(255,255,255,.05); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+  .footer-copy { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; color:#54595a; }
+
+  /* ---- MOBILE ---- */
+  @media (max-width:768px) {
+    nav { padding:12px 20px; }
+    .nav-links { display:none; }
+    .nav-hamburger { display:flex; }
+    .nav-mobile { position:fixed; top:57px; left:0; right:0; background:rgba(12,13,14,.97); border-bottom:1px solid rgba(255,255,255,.1); padding:24px 20px; z-index:99; flex-direction:column; gap:18px; }
+    .nav-mobile.open { display:flex; }
+    .nav-mobile a { font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:#9aa09c; text-decoration:none; }
+    .nav-mobile .nav-cta { color:#0c0d0e; background:#FF6A00; padding:12px 18px; text-align:center; font-weight:500; }
+
+    .hero-readout { display:none; }
+    .hero-content { padding:0 20px 48px; }
+    .hero-bottom { flex-direction:column; align-items:flex-start; }
+
+    .section { padding:64px 20px; }
+    .section-header { margin-bottom:40px; }
+    .section-note { text-align:left; max-width:100%; }
+
+    .stat-grid-inner { grid-template-columns:repeat(3,1fr); }
+    .stat-cell:nth-child(4), .stat-cell:nth-child(5) { grid-column:span 1; }
+
+    .grid-3 { grid-template-columns:1fr; }
+    .grid-2 { grid-template-columns:1fr; }
+    .grid-4 { grid-template-columns:repeat(2,1fr); }
+
+    .special-ship { flex-direction:column; gap:20px; padding:28px 24px; }
+
+    .signup { padding:64px 20px 0; }
+    .signup-form { flex-direction:column; gap:1px; }
+    .signup-input { padding:16px 16px; }
+    .signup-btn { padding:16px 20px; }
+
+    footer { grid-template-columns:1fr 1fr; gap:28px; padding:40px 20px; margin-top:60px; }
+    .footer-brand { grid-column:1/-1; }
+    .footer-legal { padding:20px 20px 32px; }
+  }
+
+  @media (max-width:480px) {
+    .hero-title { font-size:clamp(56px,16vw,100px); }
+    .stat-grid-inner { grid-template-columns:repeat(2,1fr); }
+    .grid-4 { grid-template-columns:1fr; }
+    footer { grid-template-columns:1fr; }
+    .footer-brand { grid-column:auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#top" class="nav-logo">
+    <span class="nav-logo-badge">NK</span>
+    <span class="nav-logo-text">Nautical Knights</span>
+  </a>
+  <div class="nav-links">
+    <a href="#fleet">Fleet</a>
+    <a href="#modes">Modes</a>
+    <a href="#maps">Theatre</a>
+    <a href="../index.html">← INL Studio</a>
+<a href="#signup" class="nav-cta">Pre-Register</a>
+  </div>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="#fleet" onclick="closeMenu()">Fleet</a>
+  <a href="#modes" onclick="closeMenu()">Modes</a>
+  <a href="#maps" onclick="closeMenu()">Theatre</a>
+  <a href="../index.html">← INL Studio</a>
+<a href="#signup" class="nav-cta" onclick="closeMenu()">Pre-Register</a>
+</div>
+
+<!-- HERO -->
+<section id="top" class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-bg-grid"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-overlay2"></div>
+  <div class="hero-overlay3"></div>
+  <button class="sound-toggle" id="sound-toggle" aria-label="Toggle sound">
+    <span id="sound-icon">♪</span><span id="sound-label">SOUND ON</span>
+  </button>
+  <div class="hero-readout">
+    <div style="color:#FF6A00">// SYSTEM ONLINE</div>
+    <div>REF · NK—2027</div>
+    <div>LAT 13.10°N / LON 77.59°E</div>
+    <div>STATUS · PRE-LAUNCH</div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="hero-dot"></span>
+      <span class="hero-tag">7v7 Mobile Naval Warfare</span>
+    </div>
+    <h1 class="hero-title">Nautical<br>Knights</h1>
+    <div class="hero-bottom">
+      <p class="hero-desc">Command a warship in real-time fleet combat. Every weapon is destructible. Every class has a role. And skill — never spending — decides the battle.</p>
+      <a href="#signup" class="btn-primary">Pre-Register →</a>
+    </div>
+  </div>
+  <div class="hero-marq">
+    <div class="hero-marq-inner">
+      <span class="hero-marq-text">DESTRUCTIBLE SYSTEMS&nbsp;&nbsp;◆&nbsp;&nbsp;HARBOR SIEGE&nbsp;&nbsp;◆&nbsp;&nbsp;ZERO PAY-TO-WIN&nbsp;&nbsp;◆&nbsp;&nbsp;31 SHIPS&nbsp;&nbsp;◆&nbsp;&nbsp;11 THEATRES&nbsp;&nbsp;◆&nbsp;&nbsp;6 CLASSES&nbsp;&nbsp;◆&nbsp;&nbsp;SOVIET MOLDAVIAN&nbsp;&nbsp;◆&nbsp;&nbsp;</span>
+      <span class="hero-marq-text">DESTRUCTIBLE SYSTEMS&nbsp;&nbsp;◆&nbsp;&nbsp;HARBOR SIEGE&nbsp;&nbsp;◆&nbsp;&nbsp;ZERO PAY-TO-WIN&nbsp;&nbsp;◆&nbsp;&nbsp;31 SHIPS&nbsp;&nbsp;◆&nbsp;&nbsp;11 THEATRES&nbsp;&nbsp;◆&nbsp;&nbsp;6 CLASSES&nbsp;&nbsp;◆&nbsp;&nbsp;SOVIET MOLDAVIAN&nbsp;&nbsp;◆&nbsp;&nbsp;</span>
+    </div>
+  </div>
+</section>
+
+<!-- STAT INDEX -->
+<div style="position:relative;z-index:2;background:#0c0d0e;padding:80px 40px;border-bottom:1px solid rgba(255,255,255,.07);">
+  <div class="stat-grid-inner">
+    <div class="stat-cell"><div class="stat-label">01 / PLAYERS</div><div class="stat-val">7v7</div></div>
+    <div class="stat-cell"><div class="stat-label">02 / SHIPS</div><div class="stat-val">31</div></div>
+    <div class="stat-cell"><div class="stat-label">03 / THEATRES</div><div class="stat-val">11</div></div>
+    <div class="stat-cell"><div class="stat-label">04 / CLASSES</div><div class="stat-val">6</div></div>
+    <div class="stat-cell"><div class="stat-label">05 / PAY-TO-WIN</div><div class="stat-val accent">0</div></div>
+  </div>
+</div>
+
+<!-- CORE DOCTRINE -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-num">[ 01 ]</span>
+        <h2 class="section-title">Core Doctrine</h2>
+      </div>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-code">D—01</div>
+        <h3 class="card-title">Destructible Systems</h3>
+        <p class="card-body">Every turret, engine, radar and torpedo tube carries its own health. Shoot the engine and they crawl. Shoot the radar and they go blind. Shoot the rudder and they can't turn. Every hit rewrites the battle.</p>
+      </div>
+      <div class="card">
+        <div class="card-code">D—02</div>
+        <h3 class="card-title">CS2 On Water</h3>
+        <p class="card-body">Harbor Siege: attack or defend a fortified harbor. One round, no respawn, every decision final. Three ships must hold the breach zone for ten straight seconds. Defenders stop them — or die trying.</p>
+      </div>
+      <div class="card">
+        <div class="card-code">D—03</div>
+        <h3 class="card-title">Zero Pay-To-Win</h3>
+        <p class="card-body">Ships and stats are earned through play alone. Premium currency buys cosmetics and nothing else. No energy gates, no loot-box ships. The best player wins — not the biggest spender.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHIP CLASSES -->
+<section id="fleet" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-num">[ 02 ]</span>
+        <h2 class="section-title">Ship Classes</h2>
+      </div>
+      <span class="section-note">// SIX ROLES · A MIXED FLEET BEATS A UNIFORM ONE</span>
+    </div>
+    <div class="grid-2" style="margin-bottom:1px;">
+      <div class="card-mid">
+        <div class="ship-row"><span class="ship-id">S—01</span><h3 class="ship-name">Destroyer</h3><span class="ship-role">Flanker</span></div>
+        <p class="ship-desc">Fastest hull afloat. A glass cannon that lives and dies by positioning. Torpedo Swarm — 6 simultaneous.</p>
+      </div>
+      <div class="card-mid">
+        <div class="ship-row"><span class="ship-id">S—02</span><h3 class="ship-name">Cruiser</h3><span class="ship-role">Brawler</span></div>
+        <p class="ship-desc">Balanced backbone of any fleet. Trades blows at the front. Dual Battery — bow and stern fire together.</p>
+      </div>
+      <div class="card-mid">
+        <div class="ship-row"><span class="ship-id">S—03</span><h3 class="ship-name">Battleship</h3><span class="ship-role">Anchor</span></div>
+        <p class="ship-desc">Slow, armored, devastating. Anchors a position and punishes the careless. Long-Range Salvo — 9 shells.</p>
+      </div>
+      <div class="card-mid">
+        <div class="ship-row"><span class="ship-id">S—04</span><h3 class="ship-name">Submarine</h3><span class="ship-role">Assassin</span></div>
+        <p class="ship-desc">Invisible until it strikes. Reshapes a battle from below. Dive Mode — invisible to radar and sonar.</p>
+      </div>
+      <div class="card-mid">
+        <div class="ship-row"><span class="ship-id">S—05</span><h3 class="ship-name">Carrier</h3><span class="ship-role">Air Wing</span></div>
+        <p class="ship-desc">Stays behind the line, commands the sky. Deploys strike aircraft on a countdown. Air Assault — 3 planes, one run.</p>
+      </div>
+      <div class="card-mid">
+        <div class="ship-row"><span class="ship-id">S—06</span><h3 class="ship-name">Support</h3><span class="ship-role">Anchor</span></div>
+        <p class="ship-desc">The hull that keeps others alive. Repair Beam — direct line-of-sight hull restore. Without it, the fleet falls apart.</p>
+      </div>
+    </div>
+    <!-- Special ship -->
+    <div class="special-ship" style="margin-top:1px;">
+      <div style="flex:1">
+        <div class="special-badge">Login Exclusive</div>
+        <div class="ship-row"><h3 class="ship-name" style="font-size:36px;">Soviet Moldavian</h3></div>
+        <p class="ship-desc" style="font-size:15px;max-width:500px;">Cold War heavy cruiser. Unlocked permanently by logging in during the founding period — no purchase, no grind. The ship that marks the ones who were there first.</p>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#54595a;flex-shrink:0;text-align:right;line-height:2;">
+        <div style="color:#FF6A00">// FOUNDING CREW ONLY</div>
+        <div>CLASS · HEAVY CRUISER</div>
+        <div>ERA · COLD WAR</div>
+        <div>UNLOCK · LOG IN AT LAUNCH</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BATTLE MODES -->
+<section id="modes" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-num">[ 03 ]</span>
+        <h2 class="section-title">Battle Modes</h2>
+      </div>
+      <span class="section-note">// EVERY MODE CHANGES WHAT WINS</span>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-code">M—01</div>
+        <h3 class="card-title">Harbor Siege</h3>
+        <p class="card-body">One round. No respawn. Attack the harbor or defend it. Three ships hold the breach zone for ten seconds — defenders survive or die. Every decision is final.</p>
+      </div>
+      <div class="card">
+        <div class="card-code">M—02</div>
+        <h3 class="card-title">Fleet Annihilation</h3>
+        <p class="card-body">Sink all seven. Classic destruction. No objectives to game, nowhere to hide. The last fleet standing wins — and the score tracks who carried.</p>
+      </div>
+      <div class="card">
+        <div class="card-code">M—03</div>
+        <h3 class="card-title">Control Points</h3>
+        <p class="card-body">Three strategic zones on the map. Hold more zones than your enemy to bleed their tickets dry. Momentum is everything — lose one point and the tide turns fast.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THEATRES -->
+<section id="maps" class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-header-left">
+        <span class="section-num">[ 05 ]</span>
+        <h2 class="section-title">Theatres</h2>
+      </div>
+      <span class="section-note" style="text-align:right;color:#FF6A00">+ 1 COMMUNITY MAP / SEASON</span>
+    </div>
+    <div class="grid-4">
+      <div class="card-sm"><div class="map-code">T—01</div><div class="map-name">Islands</div><div class="map-sub">Tropical Pacific · scattered isles</div></div>
+      <div class="card-sm"><div class="map-code">T—02</div><div class="map-name">Green Hills</div><div class="map-sub">Coastal grassland · cliffs</div></div>
+      <div class="card-sm"><div class="map-code">T—03</div><div class="map-name">Canals</div><div class="map-sub">Industrial · narrow channels</div></div>
+      <div class="card-sm"><div class="map-code">T—04</div><div class="map-name">Forgotten Isles</div><div class="map-sub">Abandoned ruins · heavy fog</div></div>
+      <div class="card-sm"><div class="map-code">T—05</div><div class="map-name">Perilous Cliffs</div><div class="map-sub">Rocky fjord · one lane</div></div>
+      <div class="card-sm"><div class="map-code">T—06</div><div class="map-name">North Mountains</div><div class="map-sub">Arctic · blizzard events</div></div>
+      <div class="card-sm"><div class="map-code">T—07</div><div class="map-name">River Delta</div><div class="map-sub">Southeast Asia · split channels</div></div>
+      <div class="card-sm"><div class="map-code">T—08</div><div class="map-name">Pacific Depths</div><div class="map-sub">Open ocean · sub warfare</div></div>
+      <div class="card-sm"><div class="map-code">T—09</div><div class="map-name">Fortified Harbor</div><div class="map-sub">Harbor Siege exclusive</div></div>
+      <div class="card-sm"><div class="map-code">T—10</div><div class="map-name">Storm Front</div><div class="map-sub">Dynamic weather · reduced sight</div></div>
+      <div class="card-sm"><div class="map-code">T—11</div><div class="map-name">Coral Straits</div><div class="map-sub">Reef maze · speed penalty</div></div>
+      <div class="card-sm" style="border:1px dashed rgba(255,106,0,.25);display:flex;align-items:center;justify-content:center;text-align:center;">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#FF6A00;margin-bottom:8px;">// SEASON 1</div>
+          <div class="map-name" style="font-size:18px;color:#9aa09c;">Community Map</div>
+          <div class="map-sub">Voted in by players</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRE-REGISTER -->
+<section id="signup" class="signup">
+  <div class="signup-inner">
+    <div class="signup-eyebrow">// REPORT FOR DUTY</div>
+    <h2 class="signup-title">Pre-Register</h2>
+    <p class="signup-desc">Join the crew list for beta access, launch intel, and exclusive founder cosmetics — the First Salvo cannon effect and Founding Crew hull decal. All cosmetic, all permanently exclusive.</p>
+    <div class="signup-form" id="signup-form">
+      <input type="email" class="signup-input" id="email-input" placeholder="EMAIL ADDRESS" required>
+      <button class="signup-btn" id="enlist-btn" onclick="handleEnlist()">Enlist →</button>
+    </div>
+    <div class="signup-msg" id="signup-msg"></div>
+    <div class="signup-meta">FREE TO PLAY · iOS &amp; ANDROID · MAY 2027</div>
+  </div>
+
+  <footer>
+    <div class="footer-brand">
+      <div class="footer-brand-name">Nautical Knights</div>
+      <p class="footer-brand-addr">Thirumala Nagar, Attur Layout, Yelahanka New Town, Bangalore, Karnataka 560064, India</p>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-head">// GAME</div>
+      <a href="#fleet">Ship Fleet</a>
+      <a href="#modes">Battle Modes</a>
+      <a href="#maps">Theatres</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-head">// COMMUNITY</div>
+      <a href="https://discord.gg/8Pk64eQbQS" target="_blank" rel="noopener">Discord ↗</a>
+      <a href="https://inldev.in/" target="_blank" rel="noopener">INL Dev Studio ↗</a>
+      <a href="mailto:inlesportsplay@gmail.com">Contact</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-head">// SUPPORT</div>
+      <a href="mailto:inlesportsplay@gmail.com">inlesportsplay@gmail.com</a>
+      <a href="#signup">Report for Duty</a>
+    </div>
+  </footer>
+  <div class="footer-legal">
+    <span class="footer-copy">© 2026 INL Dev Studio. All rights reserved.</span>
+    <span class="footer-copy">NAUTICAL KNIGHTS · FREE TO PLAY · MAY 2027</span>
+  </div>
+</section>
+
+<audio id="bg-music" src="Aegis_Over_Tides.mp3" loop preload="auto"></audio>
+
+<script>
+  // --- HAMBURGER MENU ---
+  const hamburger = document.getElementById('hamburger');
+  const navMobile = document.getElementById('nav-mobile');
+  hamburger.addEventListener('click', () => {
+    navMobile.classList.toggle('open');
+  });
+  function closeMenu() {
+    navMobile.classList.remove('open');
+  }
+  document.addEventListener('click', (e) => {
+    if (!hamburger.contains(e.target) && !navMobile.contains(e.target)) {
+      navMobile.classList.remove('open');
+    }
+  });
+
+  // --- EMAIL ENLIST ---
+  function handleEnlist() {
+    const input = document.getElementById('email-input');
+    const msg = document.getElementById('signup-msg');
+    const btn = document.getElementById('enlist-btn');
+    const email = input.value.trim();
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg.style.color = '#ff6b6b';
+      msg.textContent = '// INVALID EMAIL — CHECK AND TRY AGAIN';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'ENLISTING...';
+    msg.style.color = '#FF6A00';
+    msg.textContent = '';
+
+    // Send via mailto as fallback (works without backend)
+    const subject = encodeURIComponent('Nautical Knights — Pre-Registration');
+    const body = encodeURIComponent('New pre-registration:\n\nEmail: ' + email + '\n\nThis user registered via the Nautical Knights website.');
+
+    // Create a hidden link and click it
+    const mailtoLink = 'mailto:inlesportsplay@gmail.com?subject=' + subject + '&body=' + body;
+    
+    // Simulate processing
+    setTimeout(() => {
+      msg.textContent = '// ENLISTED. STAND BY FOR DISPATCH.';
+      btn.textContent = 'ENLISTED ✓';
+      btn.style.background = '#4caf50';
+      input.value = '';
+      input.disabled = true;
+
+      // Open mailto silently
+      window.location.href = mailtoLink;
+    }, 600);
+  }
+
+  // Allow Enter key in email input
+  document.getElementById('email-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') handleEnlist();
+  });
+
+  // --- BACKGROUND MUSIC ---
+  // Browsers block audio autoplay until the user interacts with the page,
+  // so we start playback on the very first click/tap/keypress anywhere.
+  const bgMusic = document.getElementById('bg-music');
+  const soundToggle = document.getElementById('sound-toggle');
+  const soundLabel = document.getElementById('sound-label');
+  let musicStarted = false;
+  let userMuted = false;
+
+  function startMusicOnce() {
+    if (musicStarted) return;
+    musicStarted = true;
+    bgMusic.volume = 0.55;
+    bgMusic.play().catch(() => { musicStarted = false; });
+  }
+  ['click', 'touchstart', 'keydown'].forEach(evt => {
+    document.addEventListener(evt, startMusicOnce, { once: true, passive: true });
+  });
+
+  soundToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    userMuted = !userMuted;
+    bgMusic.muted = userMuted;
+    soundToggle.classList.toggle('muted', userMuted);
+    soundLabel.textContent = userMuted ? 'SOUND OFF' : 'SOUND ON';
+    if (!musicStarted) startMusicOnce();
+  });
+</script>
+
+</body>
+</html>
