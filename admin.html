@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin — INL Dev Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<style>
+:root{--acc:#FF6A00;--acc2:#FFB347;--bg:#0B0C10;--pan:#13151B;--side:#0F1015;--line:#22252E;--txt:#ECEEF2;--mut:#8D94A1;--ok:#22C55E;--bad:#EF4444;--blue:#4F8BFF}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,sans-serif;font-size:14px}
+.h{font-family:'Chakra Petch';letter-spacing:.06em}.mono{font-family:'JetBrains Mono'}
+.btn{background:var(--acc);color:#0A0A0A;border:0;padding:8px 14px;font-weight:600;border-radius:6px;cursor:pointer;font-family:Inter}
+.btn.g{background:#1B1E26;color:var(--txt);border:1px solid var(--line)}.btn.s{padding:5px 10px;font-size:12px}.btn.r{background:none;color:var(--bad);border:1px solid var(--bad)}
+#app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+aside{background:linear-gradient(180deg,#1A0E05,#0F1015 40%);border-right:1px solid var(--line);position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:20px;font-family:'Chakra Petch';font-weight:700;font-size:20px;letter-spacing:.08em}
+.brand i{width:34px;height:34px;border-radius:50%;background:var(--acc);display:grid;place-items:center;color:#000;font-style:normal}
+.me{margin:0 16px 18px;padding:12px;border:1px solid var(--line);border-radius:8px;display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.02)}
+.me img{width:36px;height:36px;border-radius:50%}.me b{display:block;font-size:13px}.me small{color:var(--ok);font-size:11px}
+.mh{padding:4px 22px 8px;color:var(--mut);font-size:11px;letter-spacing:.14em}
+aside a{display:flex;justify-content:space-between;align-items:center;padding:11px 22px;color:#C5CAD3;cursor:pointer;font-size:14px}
+aside a:before{content:'';width:7px;height:7px;border:2px solid currentColor;border-radius:50%;margin-right:12px;flex:none}
+aside a span{flex:1}aside a.on{color:#fff;background:rgba(255,106,0,.14);box-shadow:inset 3px 0 var(--acc)}aside a:hover{color:#fff}
+aside small{font-size:11px;color:var(--acc2);background:rgba(255,106,0,.12);padding:1px 7px;border-radius:10px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--line);background:var(--side);position:sticky;top:0;z-index:4}
+.top input{background:#1B1E26;border:1px solid var(--line);color:var(--txt);padding:8px 12px;border-radius:6px;width:300px}
+main{padding:24px 28px}
+.sub{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}.sub h2{margin:0;font-size:22px;font-weight:600}.sub .crumb{color:var(--mut);font-size:13px}
+.card{background:var(--pan);border:1px solid var(--line);border-radius:10px;padding:20px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding:0;margin-bottom:20px}
+.k{padding:20px 22px;display:flex;justify-content:space-between;align-items:center;border-right:1px solid var(--line)}.k:last-child{border:0}
+.k b{display:block;font-size:28px;font-weight:700}.k .l{color:var(--acc);font-size:14px}.k .d{color:var(--mut);font-size:12px;margin-top:2px}
+.row{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:20px}.row3{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:20px}
+.ct{font-weight:600;margin-bottom:4px}.cs{color:var(--mut);font-size:12px;margin-bottom:14px}
+.mini{display:flex;justify-content:space-between;align-items:end}.mini b{font-size:24px}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;color:var(--mut);letter-spacing:.08em;position:sticky;top:0;background:var(--pan)}td{font-size:13px;max-width:380px;word-break:break-word}tr:hover td{background:#181B22}
+.pill{padding:2px 8px;font-size:11px;border-radius:10px}.yes{background:rgba(34,197,94,.15);color:var(--ok)}.no{background:rgba(255,106,0,.14);color:var(--acc2)}
+.bar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}.bar input{background:#1B1E26;border:1px solid var(--line);color:var(--txt);padding:8px 12px;border-radius:6px;min-width:260px}
+.center{display:grid;place-items:center;height:90vh;text-align:center}.err{color:var(--bad)}
+pre{margin:0;white-space:pre-wrap;font-family:'JetBrains Mono';font-size:11px;color:#B8BDC7}
+@media(max-width:1000px){#app{grid-template-columns:1fr}aside{position:static;height:auto}.kpis,.row,.row3{grid-template-columns:1fr}.k{border-right:0;border-bottom:1px solid var(--line)}.top input{display:none}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div id="gate" class="center"><div><div class="brand" style="justify-content:center"><i>◆</i>INL ADMIN</div><p style="color:var(--mut)">Owner access only.</p><button class="btn" id="login">Sign in with Google</button><p id="gerr" class="err"></p></div></div>
+<div id="app" style="display:none">
+ <aside><div class="brand"><i>◆</i>INL ADMIN</div><div class="me" id="me"></div><div class="mh">MAIN MENU</div><div id="nav"></div></aside>
+ <div><div class="top"><div class="h" style="font-weight:700">INL DEV STUDIO · COMMAND CENTER</div><input placeholder="Search in this tab…" oninput="q=this.value;if(tab!=='overview')show()"><div id="who"></div></div><main id="main"></main></div>
+</div>
+<script>
+firebase.initializeApp({apiKey:'AIzaSyDx_QLGhE2mB6eIYeVlBEDKAsDqckaH0gM',authDomain:'inl-multistream.firebaseapp.com',projectId:'inl-multistream'});
+const auth=firebase.auth(),db=firebase.firestore();
+const OWNER='malhotraaditya342@gmail.com';
+const ALLTABS=[['overview','Dashboard'],['upi','UPI payments'],['income','Income'],['apps','All apps'],['reviews','Reviews'],['users','Users'],['installs','App installs'],['presence','Installs & live'],['crashes','Crashes'],['redeemed','Codes used'],['partners','Partners'],['refclaims','Referrals'],['refcodes','Invite codes'],['promos','Promo codes'],['applications','Applications'],['config','Config'],['staff','Staff']];
+const TABS_FOR=()=>ALLTABS.filter(([k])=>!(((k==='income'||k==='upi')&&!canMoney())||((k==='staff'||k==='config'||k==='promos'||k==='applications')&&ROLE!=='owner')));
+let tab='overview',cache={},q='',ROLE=null;
+const canMoney=()=>ROLE==='owner'||ROLE==='manager',canMod=()=>ROLE!=='viewer';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=v=>{if(v&&typeof v.toDate==='function')return v.toDate().toLocaleString('en-IN');if(typeof v==='number'&&v>1.5e12&&v<3e12)return new Date(v).toLocaleString('en-IN');if(typeof v==='boolean')return `<span class="pill ${v?'yes':'no'}">${v}</span>`;if(v&&typeof v==='object')return `<pre>${esc(JSON.stringify(v,null,1))}</pre>`;return esc(v)};
+document.getElementById('login').onclick=()=>auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e=>document.getElementById('gerr').textContent=e.code==='auth/unauthorized-domain'?'Add inldev.in to Firebase → Authentication → Settings → Authorized domains.':e.message);
+auth.onAuthStateChanged(async u=>{
+  if(!u){gate.style.display='';app.style.display='none';who.innerHTML='';return}
+  if(u.email===OWNER)ROLE='owner';else{try{const sd=await db.collection('staff').doc(u.email).get();ROLE=sd.exists?sd.data().role:null}catch(_){ROLE=null}}
+  if(!ROLE){gerr.textContent='This account has no admin access.';auth.signOut();return}
+  gate.style.display='none';app.style.display='grid';who.innerHTML='<button class="btn g s" onclick="auth.signOut()">Sign out</button>';me.innerHTML=`<img src="${esc(u.photoURL||'')}" onerror="this.style.display='none'"><div><b>${esc(u.displayName||'Owner')}</b><small>● ${ROLE[0].toUpperCase()+ROLE.slice(1)}</small></div>`;
+  nav();show();
+});
+async function get(c,force){if(!force&&cache[c])return cache[c];const s=await db.collection(c).limit(2000).get();return cache[c]=s.docs.map(d=>({_id:d.id,...d.data()}))}
+function nav(){document.getElementById('nav').innerHTML=TABS_FOR().map(([k,l])=>`<a class="${k===tab?'on':''}" onclick="tab='${k}';q='';nav();show()"><span>${l}</span>${cache[k]?`<small>${cache[k].length}</small>`:''}</a>`).join('')}
+async function show(force){
+  const m=document.getElementById('main');m.innerHTML='<p style="color:var(--mut)">Loading…</p>';
+  try{
+    if(tab==='overview')return overview(m,force);
+    if(tab==='reviews')return reviews(m,force);
+    if(tab==='income')return income(m,force);
+    if(tab==='upi')return upiTab(m,force);
+    if(tab==='apps')return appsTab(m,force);
+    if(tab==='staff')return staffTab(m,force);
+    if(tab==='promos')return promosTab(m,force);
+    if(tab==='applications')return appsList(m,force);
+    const rows=await get(tab,force);nav();table(m,rows);
+  }catch(e){m.innerHTML=`<p class="err">${esc(e.message)}</p>`}
+}
+function table(m,rows){
+  const keys=[...new Set(rows.flatMap(r=>Object.keys(r)))].sort((a,b)=>a==='_id'?-1:b==='_id'?1:a.localeCompare(b));
+  const L=q?rows.filter(r=>JSON.stringify(r).toLowerCase().includes(q.toLowerCase())):rows;
+  m.innerHTML=`<div class="bar"><input placeholder="Search…" value="${esc(q)}" oninput="q=this.value;show()" id="qs"><button class="btn g s" onclick="show(true)">REFRESH</button><button class="btn g s" onclick="csv()">EXPORT CSV</button><span class="mono" style="color:var(--mut)">${L.length} / ${rows.length}</span></div>`+
+   (rows.length?`<div class="card" style="padding:0;overflow:auto;max-height:75vh"><table><tr>${keys.map(k=>`<th>${esc(k)}</th>`).join('')}</tr>${L.map(r=>`<tr>${keys.map(k=>`<td>${fmt(r[k])}</td>`).join('')}</tr>`).join('')}</table></div>`:'<p style="color:var(--mut)">Nothing here yet.</p>');
+  const i=document.getElementById('qs');if(q){i.focus();i.setSelectionRange(q.length,q.length)}
+}
+window.csv=()=>{const rows=cache[tab]||[];const keys=[...new Set(rows.flatMap(r=>Object.keys(r)))];const c=v=>{v=v&&v.toDate?v.toDate().toISOString():typeof v==='object'?JSON.stringify(v):v;return '"'+String(v??'').replace(/"/g,'""')+'"'};
+  const blob=new Blob([[keys.join(','),...rows.map(r=>keys.map(k=>c(r[k])).join(','))].join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`inl-${tab}.csv`;a.click()};
+let charts=[];
+async function overview(m,force){
+  const names=['users','presence','crashes','reviews','redeemed','partners','refclaims'].concat(canMoney()?['payments']:[]);
+  const d={payments:[]};await Promise.all(names.map(async n=>{try{d[n]=await get(n,force)}catch(_){d[n]=[]}}));nav();
+  const now=Date.now(),ms=v=>v&&v.toDate?v.toDate().getTime():+v||0,DAY=864e5;
+  const ct=c=>ms(c.at||c.time||c.created||c.ts);
+  const pro=d.users.filter(u=>u.pro===true||u.isPro===true||(u.proUntil&&ms(u.proUntil)>now)).length;
+  const live=d.presence.filter(p=>ms(p.liveUntil)>now).length, online=d.presence.filter(p=>now-ms(p.lastSeen)<5*60e3).length;
+  const day=d.presence.filter(p=>now-ms(p.lastSeen)<DAY).length, week=d.presence.filter(p=>now-ms(p.lastSeen)<7*DAY).length;
+  const appr=d.reviews.filter(r=>r.approved),pend=d.reviews.length-appr.length,avg=appr.length?(appr.reduce((a,r)=>a+r.rating,0)/appr.length).toFixed(1):'—';
+  const days=[...Array(14)].map((_,i)=>{const t=new Date(now-(13-i)*DAY);t.setHours(0,0,0,0);return t.getTime()});
+  const per=(arr,f)=>days.map(t=>arr.filter(x=>{const v=f(x);return v>=t&&v<t+DAY}).length);
+  const seen=per(d.presence,p=>ms(p.lastSeen)),cr=per(d.crashes,ct),cd=per(d.redeemed,r=>ms(r.at||r.created||r.ts));
+  const lbl=days.map(t=>new Date(t).toLocaleDateString('en-IN',{day:'numeric',month:'short'}));
+  const K=(id,v,l,dd)=>`<div class="k"><div><b>${v}</b><div class="l">${l}</div><div class="d">${dd}</div></div><canvas id="${id}" width="110" height="40"></canvas></div>`;
+  const rev=d.payments.reduce((a,p)=>a+(+p.amount||0),0)/100, mStart=new Date(new Date(now).getFullYear(),new Date(now).getMonth(),1).getTime();
+  const revM=d.payments.filter(p=>ms(p.at)>=mStart).reduce((a,p)=>a+(+p.amount||0),0)/100, subs=d.users.filter(u=>u.subStatus==='active').length;
+  const money=canMoney()?`<div class="card kpis" style="margin-bottom:20px">${K('m1','₹'+rev.toLocaleString('en-IN'),'Total income','all apps, all time')+K('m2','₹'+revM.toLocaleString('en-IN'),'This month',d.payments.filter(p=>ms(p.at)>=mStart).length+' payments')+K('m3','₹'+(subs*99).toLocaleString('en-IN'),'Monthly recurring',subs+' active subscriptions')+K('m4',d.payments.length,'Payments','Razorpay')}</div>`:'';
+  m.innerHTML=`<div class="sub"><h2>Dashboard</h2><span class="crumb">Installs | Pro | Reviews | Crashes</span><span style="flex:1"></span><button class="btn g s" onclick="show(true)">↻ Refresh</button><button class="btn s" onclick="tab='users';nav();show()">Export data</button></div>
+  ${money}<div class="card kpis">${K('s1',d.presence.length,'Installs',week+' active this week')+K('s2',day,'Active today',online+' online now')+K('s3',pro,'Pro users',d.redeemed.length+' codes redeemed')+K('s4',live,'Streaming now',d.crashes.length+' crashes total')}</div>
+  <div class="row"><div class="card"><div class="ct">Activity overview</div><div class="cs">Last 14 days · users last seen per day, codes redeemed and crashes</div><div style="display:flex;gap:40px;margin-bottom:10px"><div><div class="cs" style="margin:0">Active (14d)</div><b style="font-size:20px">${seen.reduce((a,b)=>a+b,0)}</b></div><div><div class="cs" style="margin:0">Crashes (14d)</div><b style="font-size:20px">${cr.reduce((a,b)=>a+b,0)}</b></div></div><canvas id="main1" height="120"></canvas></div>
+  <div class="card"><div class="ct">Reviews by app</div><div class="cs">${appr.length} live · ${pend} pending · ★ ${avg}</div><canvas id="radar" height="260"></canvas></div></div>
+  <div class="row3"><div class="card mini"><div><div class="cs" style="margin:0">Downloads (all apps)</div><b id="dl">…</b></div><button class="btn g s" onclick="tab='apps';nav();show()">By app</button></div><div class="card mini"><div><div class="cs" style="margin:0">Partners</div><b>${d.partners.length}</b></div><span class="pill yes">earning</span></div><div class="card mini"><div><div class="cs" style="margin:0">Referrals</div><b>${d.refclaims.length}</b></div><span class="pill no">invites</span></div><div class="card mini"><div><div class="cs" style="margin:0">Reviews pending</div><b>${pend}</b></div><button class="btn s" onclick="tab='reviews';nav();show()">Moderate</button></div></div>
+  <div class="card"><div class="ct">Latest crashes</div><div id="lc"></div></div>`;
+  charts.forEach(c=>c.destroy());charts=[];
+  const grid='#22252E',tick='#8D94A1';
+  const spark=(id,data,col)=>charts.push(new Chart(document.getElementById(id),{type:'line',data:{labels:lbl,datasets:[{data,borderColor:col,borderWidth:2,pointRadius:0,tension:.35}]},options:{responsive:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}}}}));
+  if(canMoney()){const pd=days.map(t=>d.payments.filter(p=>{const v=ms(p.at);return v>=t&&v<t+DAY}).reduce((a,p)=>a+(+p.amount||0),0)/100);spark('m1',pd,'#22C55E');spark('m2',pd,'#FFB347');spark('m3',per(d.users.filter(u=>u.subStatus==='active'),u=>ms(u.proUntil)-30*DAY),'#FF6A00');spark('m4',per(d.payments,p=>ms(p.at)),'#4F8BFF')}
+  spark('s1',seen,'#FF6A00');spark('s2',seen.map((v,i)=>v),'#FFB347');spark('s3',cd,'#22C55E');spark('s4',cr,'#4F8BFF');
+  charts.push(new Chart(document.getElementById('main1'),{type:'line',data:{labels:lbl,datasets:[
+    {label:'Active users',data:seen,borderColor:'#FF6A00',backgroundColor:'rgba(255,106,0,.15)',fill:true,tension:.35,pointRadius:3},
+    {label:'Codes redeemed',data:cd,borderColor:'#22C55E',backgroundColor:'rgba(34,197,94,.12)',fill:true,tension:.35,pointRadius:3},
+    {label:'Crashes',data:cr,borderColor:'#EF4444',borderDash:[4,4],tension:.35,pointRadius:2}]},
+    options:{plugins:{legend:{labels:{color:tick}}},scales:{x:{grid:{color:grid},ticks:{color:tick}},y:{beginAtZero:true,grid:{color:grid},ticks:{color:tick,precision:0}}}}}));
+  const apps=['EZStream','INL Boost','INL Launcher','INL Cam','SnapSolve'];
+  charts.push(new Chart(document.getElementById('radar'),{type:'radar',data:{labels:apps.map(a=>a.replace('INL ','')),datasets:[
+    {label:'Reviews',data:apps.map(a=>d.reviews.filter(r=>r.app===a||(a==='EZStream'&&r.app==='INL MultiStream')).length),borderColor:'#FF6A00',backgroundColor:'rgba(255,106,0,.35)'},
+    {label:'Avg ★',data:apps.map(a=>{const L=appr.filter(r=>r.app===a||(a==='EZStream'&&r.app==='INL MultiStream'));return L.length?L.reduce((x,r)=>x+r.rating,0)/L.length:0}),borderColor:'#4F8BFF',backgroundColor:'rgba(79,139,255,.3)'}]},
+    options:{plugins:{legend:{labels:{color:tick}}},scales:{r:{beginAtZero:true,grid:{color:grid},angleLines:{color:grid},pointLabels:{color:tick},ticks:{display:false}}}}}));
+  ghDownloads().then(g=>{const e=document.getElementById('dl');if(e)e.textContent=Object.values(g).reduce((a,b)=>a+b,0).toLocaleString('en-IN')});
+  table(document.getElementById('lc'),[...d.crashes].sort((a,b)=>ct(b)-ct(a)).slice(0,8));
+}
+const APPS=[
+ {n:'EZStream',p:'Windows',v:'2.3.0',model:'Freemium · Pro ₹99/mo or ₹999/yr',st:'Live'},
+ {n:'INL Boost',p:'Windows',v:'latest',model:'Free',st:'Live'},
+ {n:'INL Launcher',p:'Windows',v:'1.0',model:'Free',st:'Live'},
+ {n:'INL Cam',p:'Android',v:'1.0',model:'Free',st:'Live'},
+ {n:'SnapSolve',p:'Android',v:'latest',model:'Free (ads planned)',st:'Live'},
+ {n:'Kova',p:'Android · Web · Windows',v:'—',model:'Premium + communities (planned)',st:'In development'},
+ {n:'CreatorKit',p:'—',v:'—',model:'Planned',st:'Planned'},
+ {n:'Wavr',p:'—',v:'—',model:'Planned',st:'Prototype'}];
+async function income(m,force){
+  const pays=await get('payments',force),users=await get('users',force);nav();
+  const ms=v=>v&&v.toDate?v.toDate().getTime():+v||0,inr=x=>'₹'+(x/100).toLocaleString('en-IN');
+  const months=[...Array(12)].map((_,i)=>{const d=new Date();d.setDate(1);d.setHours(0,0,0,0);d.setMonth(d.getMonth()-11+i);return d});
+  const byM=months.map((d,i)=>{const e=i<11?months[i+1].getTime():Infinity;return pays.filter(p=>ms(p.at)>=d.getTime()&&ms(p.at)<e).reduce((a,p)=>a+(+p.amount||0),0)/100});
+  const byApp=APPS.map(a=>({a:a.n,t:pays.filter(p=>(p.app||'EZStream')===a.n).reduce((x,p)=>x+(+p.amount||0),0),c:pays.filter(p=>(p.app||'EZStream')===a.n).length}));
+  const tot=pays.reduce((a,p)=>a+(+p.amount||0),0),subs=users.filter(u=>u.subStatus==='active').length,pro=users.filter(u=>u.proUntil&&ms(u.proUntil)>Date.now()).length;
+  m.innerHTML=`<div class="sub"><h2>Income</h2><span class="crumb">All apps · Razorpay</span><span style="flex:1"></span><button class="btn g s" onclick="show(true)">↻ Refresh</button><button class="btn s" onclick="csvOf('payments')">Export CSV</button></div>
+  <div class="card kpis"><div class="k"><div><b>${inr(tot)}</b><div class="l">Total income</div><div class="d">${pays.length} payments</div></div></div><div class="k"><div><b>₹${(subs*99).toLocaleString('en-IN')}</b><div class="l">Monthly recurring</div><div class="d">${subs} active subs</div></div></div><div class="k"><div><b>${pro}</b><div class="l">Pro right now</div><div class="d">paid + trial</div></div></div><div class="k"><div><b>${pays.length?inr(tot/pays.length):'—'}</b><div class="l">Avg payment</div><div class="d">per transaction</div></div></div></div>
+  <div class="row"><div class="card"><div class="ct">Income by month</div><div class="cs">Last 12 months, ₹</div><canvas id="inc" height="120"></canvas></div>
+  <div class="card"><div class="ct">Income by app</div><div class="cs">All time</div><table>${byApp.map(x=>`<tr><td>${esc(x.a)}</td><td style="text-align:right">${inr(x.t)}</td><td style="color:var(--mut);text-align:right">${x.c}</td></tr>`).join('')}</table></div></div>
+  <div class="card"><div class="ct">Payments</div><div id="pt"></div></div>`;
+  charts.forEach(c=>c.destroy());charts=[new Chart(document.getElementById('inc'),{type:'bar',data:{labels:months.map(d=>d.toLocaleDateString('en-IN',{month:'short',year:'2-digit'})),datasets:[{label:'₹',data:byM,backgroundColor:'rgba(255,106,0,.7)',borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{color:'#22252E'},ticks:{color:'#8D94A1'}},y:{beginAtZero:true,grid:{color:'#22252E'},ticks:{color:'#8D94A1'}}}}})];
+  table(document.getElementById('pt'),[...pays].sort((a,b)=>ms(b.at)-ms(a.at)).map(p=>({...p,amount:'₹'+((+p.amount||0)/100)})));
+}
+window.csvOf=c=>{const t=tab;tab=c;csv();tab=t};
+let ghCache=null;
+async function ghDownloads(){
+  if(ghCache)return ghCache;const out={};
+  const map=n=>/multistream/i.test(n)&&/\.exe$/i.test(n)?'INL MultiStream':/boost/i.test(n)&&/\.exe$/i.test(n)?'INL Boost':/launcher/i.test(n)&&/\.exe$/i.test(n)?'INL Launcher':/cam/i.test(n)&&/\.apk$/i.test(n)?'INL Cam':/snapsolve/i.test(n)&&/\.apk$/i.test(n)?'SnapSolve':null;
+  for(const r of ['inl-downloads','inl-multistream-releases','inl-boost']){try{const j=await (await fetch(`https://api.github.com/repos/Aditya-setup/${r}/releases?per_page=100`)).json();(Array.isArray(j)?j:[]).forEach(rel=>(rel.assets||[]).forEach(a=>{const k=map(a.name);if(k)out[k]=(out[k]||0)+a.download_count}))}catch(_){}}
+  return ghCache=out;
+}
+async function appsTab(m,force){
+  if(force)ghCache=null;const gh=await ghDownloads();
+  const names=['presence','reviews','installs'].concat(canMoney()?['payments']:[]);const d={payments:[]};
+  await Promise.all(names.map(async n=>{try{d[n]=await get(n,force)}catch(_){d[n]=[]}}));nav();
+  const now=Date.now(),ms=v=>v&&v.toDate?v.toDate().getTime():+v||0;
+  m.innerHTML=`<div class="sub"><h2>All apps</h2><span class="crumb">${APPS.filter(a=>a.st==='Live').length} live · ${APPS.length-APPS.filter(a=>a.st==='Live').length} coming</span></div><div class="card" style="padding:0;overflow:auto"><table><tr><th>APP</th><th>PLATFORM</th><th>VERSION</th><th>STATUS</th><th>MODEL</th><th>DOWNLOADS</th><th>INSTALLS / ACTIVE 24H</th><th>REVIEWS</th>${canMoney()?'<th>INCOME</th>':''}</tr>${APPS.map(a=>{
+    const rv=d.reviews.filter(r=>r.app===a.n||(a.n==='EZStream'&&r.app==='INL MultiStream')),ap=rv.filter(r=>r.approved),avg=ap.length?(ap.reduce((x,r)=>x+r.rating,0)/ap.length).toFixed(1):'—';
+    const ins=(d.installs||[]).filter(x=>x.app===a.n),tot=a.n==='EZStream'?d.presence.length:ins.length,act=a.n==='EZStream'?d.presence.filter(p=>now-ms(p.lastSeen)<864e5).length:ins.filter(x=>now-ms(x.last)<864e5).length;
+    const tr=a.st!=='Live'?'—':(tot||act)?`${tot} / ${act}`:'<span style="color:var(--mut)">0 / 0</span>';
+    const inc=d.payments.filter(p=>(p.app||'EZStream')===a.n).reduce((x,p)=>x+(+p.amount||0),0)/100;
+    return `<tr><td><b>${esc(a.n)}</b></td><td>${esc(a.p)}</td><td class="mono">${esc(a.v)}</td><td><span class="pill ${a.st==='Live'?'yes':'no'}">${esc(a.st)}</span></td><td>${esc(a.model)}</td><td><b>${gh[a.n]!=null?gh[a.n].toLocaleString('en-IN'):'—'}</b></td><td>${tr}</td><td>${rv.length} · ★ ${avg}</td>${canMoney()?`<td>₹${inc.toLocaleString('en-IN')}</td>`:''}</tr>`}).join('')}</table></div>`;
+}
+const rnd=n=>{const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let o='';crypto.getRandomValues(new Uint32Array(n)).forEach(x=>o+=A[x%A.length]);return o};
+async function promosTab(m,force){
+  const rows=(await get('promos',force)).sort((a,b)=>(b.created?.seconds||0)-(a.created?.seconds||0));nav();
+  const sel='background:#1B1E26;color:var(--txt);border:1px solid var(--line);padding:8px;border-radius:6px';
+  m.innerHTML=`<div class="sub"><h2>Promo codes</h2><span class="crumb">Users type these in MultiStream → Redeem code (needs v2.3.2+)</span></div>
+  <div class="card" style="margin-bottom:20px"><div class="ct">Create promo code</div><div class="cs">Each account can use a code once. Pro time is added on top of any Pro they already have.</div>
+  <div class="bar" style="margin:0"><input id="pc" placeholder="CODE e.g. DIWALI50" style="min-width:180px;text-transform:uppercase" maxlength="32"><button class="btn g s" onclick="pc.value='INL'+rnd(6)">Random</button>
+  <select id="pd" style="${sel}"><option value="3">3 days</option><option value="7">7 days</option><option value="30" selected>1 month</option><option value="90">3 months</option><option value="180">6 months</option><option value="365">1 year</option><option value="36500">Lifetime</option></select>
+  <input id="pu" type="number" min="1" placeholder="Max uses (blank = unlimited)" style="min-width:200px">
+  <label class="cs" style="margin:0">Expires <input id="pe" type="date" style="min-width:0"></label>
+  <input id="pn" placeholder="Note (e.g. YouTube giveaway)" style="min-width:200px">
+  <button class="btn" onclick="addPromo()">Create</button><span id="pm" class="err"></span></div></div>
+  <div class="card" style="padding:0">${rows.length?`<table><tr><th>CODE</th><th>PRO TIME</th><th>USED</th><th>EXPIRES</th><th>NOTE</th><th>STATUS</th><th></th></tr>${rows.map(r=>{const exp=r.expires&&r.expires.toDate()<new Date(),full=r.maxUses&&(r.uses||0)>=r.maxUses,st=r.active===false?'OFF':exp?'EXPIRED':full?'USED UP':'ACTIVE';
+    return `<tr><td class="mono"><b>${esc(r._id)}</b> <button class="btn g s" onclick="navigator.clipboard.writeText('${esc(r._id)}');this.textContent='✓'">Copy</button></td><td>${r.days>=36500?'Lifetime':r.days+' days'}</td><td>${r.uses||0}${r.maxUses?' / '+r.maxUses:''} <button class="btn g s" onclick="whoUsed('${esc(r._id)}')">Who</button></td><td>${r.expires?r.expires.toDate().toLocaleDateString('en-IN'):'Never'}</td><td>${esc(r.note)}</td><td><span class="pill ${st==='ACTIVE'?'yes':'no'}">${st}</span></td><td style="white-space:nowrap"><button class="btn g s" onclick="togglePromo('${esc(r._id)}',${r.active===false})">${r.active===false?'Turn on':'Turn off'}</button> <button class="btn r s" onclick="delPromo('${esc(r._id)}')">Delete</button></td></tr>`}).join('')}</table>`:'<div style="padding:20px;color:var(--mut)">No promo codes yet.</div>'}</div><div id="wu"></div>`;
+}
+window.addPromo=async()=>{const c=pc.value.toUpperCase().replace(/[^A-Z0-9-]/g,'');if(c.length<3){pm.textContent='Code needs 3+ letters/numbers';return}
+  const d={days:+pd.value,uses:0,maxUses:pu.value?Math.max(1,+pu.value):0,note:pn.value.trim().slice(0,100),active:true,created:firebase.firestore.FieldValue.serverTimestamp()};
+  if(pe.value)d.expires=firebase.firestore.Timestamp.fromDate(new Date(pe.value+'T23:59:59'));
+  try{const ref=db.collection('promos').doc(c);if((await ref.get()).exists){pm.textContent='That code already exists';return}await ref.set(d);show(true)}catch(x){pm.textContent=x.message}};
+window.togglePromo=async(c,on)=>{await db.collection('promos').doc(c).update({active:on});show(true)};
+window.delPromo=async c=>{if(confirm('Delete code '+c+'? Users who already redeemed keep their Pro.')){await db.collection('promos').doc(c).delete();show(true)}};
+window.whoUsed=async c=>{const s=await db.collection('promos').doc(c).collection('uses').get();const e=document.getElementById('wu');const d=document.createElement('div');d.className='card';d.style.marginTop='20px';d.innerHTML=`<div class="ct">Who used ${esc(c)}</div>`;e.innerHTML='';e.appendChild(d);const t=document.createElement('div');d.appendChild(t);table(t,s.docs.map(x=>({uid:x.id,...x.data()})))};
+async function upiTab(m,force){
+  const rows=(await get('upiClaims',force)).sort((a,b)=>(b.at?.seconds||0)-(a.at?.seconds||0));nav();
+  const act=rows.filter(r=>r.status!=='revoked'),tot=act.reduce((a,r)=>a+(+r.amount||0),0),day=Date.now()-864e5;
+  const today=act.filter(r=>(r.at?.seconds||0)*1000>day);
+  m.innerHTML=`<div class="sub"><h2>UPI payments</h2><span class="crumb">Pro turns on instantly when a user submits their UTR. Check the UTR in your Google Pay — if the money never arrived, click Remove Pro.</span><span style="flex:1"></span><button class="btn g s" onclick="show(true)">↻ Refresh</button><button class="btn s" onclick="csvOf('upiClaims')">Export CSV</button></div>
+  <div class="card kpis"><div class="k"><div><b>₹${tot.toLocaleString('en-IN')}</b><div class="l">Total via UPI</div><div class="d">${act.length} payments</div></div></div><div class="k"><div><b>₹${today.reduce((a,r)=>a+(+r.amount||0),0)}</b><div class="l">Last 24 hours</div><div class="d">${today.length} payments</div></div></div><div class="k"><div><b>${rows.filter(r=>r.status==='revoked').length}</b><div class="l">Removed</div><div class="d">no money received</div></div></div><div class="k"><div><b>${new Set(act.map(r=>r.uid)).size}</b><div class="l">Paying users</div><div class="d">unique accounts</div></div></div></div>
+  <div class="card" style="padding:0;overflow:auto">${rows.length?`<table><tr><th>TIME</th><th>USER</th><th>PLAN</th><th>AMOUNT</th><th>UTR</th><th>NOTE</th><th>PRO UNTIL</th><th>STATUS</th><th></th></tr>${rows.map(r=>`<tr><td>${fmt(r.at)}</td><td><b>${esc(r.name)}</b><br><span class="cs">${esc(r.email)}</span></td><td>${esc(r.plan)}</td><td><b>₹${r.amount}</b></td><td class="mono">${esc(r._id)} <button class="btn g s" onclick="navigator.clipboard.writeText('${esc(r._id)}');this.textContent='✓'">Copy</button></td><td class="mono">${esc(r.ref)}</td><td>${fmt(r.until)}</td><td><span class="pill ${r.status==='revoked'?'':'yes'}" style="${r.status==='revoked'?'background:rgba(239,68,68,.15);color:var(--bad)':''}">${r.status==='revoked'?'REMOVED':'ACTIVE'}</span></td><td>${r.status==='revoked'||ROLE!=='owner'?'':`<button class="btn r s" onclick="revokeUpi('${esc(r._id)}')">Remove Pro</button>`}</td></tr>`).join('')}</table>`:'<div style="padding:20px;color:var(--mut)">No UPI payments yet.</div>'}</div>`;
+}
+window.revokeUpi=async utr=>{if(!confirm('Remove Pro for UTR '+utr+'? Only do this if the money did NOT arrive in your Google Pay.'))return;
+  const t=await firebase.auth().currentUser.getIdToken();const r=await fetch('https://asia-south1-inl-multistream.cloudfunctions.net/revokeUpi',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+t},body:JSON.stringify({utr})});
+  const j=await r.json().catch(()=>({}));if(!r.ok)return alert(j.error||'Failed');delete cache.payments;show(true)};
+let appF='all';
+async function appsList(m,force){
+  const rows=(await get('applications',force)).sort((a,b)=>(b.created?.seconds||0)-(a.created?.seconds||0));nav();
+  const cnt=k=>rows.filter(r=>k==='all'||r.status===k).length,L=rows.filter(r=>appF==='all'||r.status===appF).filter(r=>!q||JSON.stringify(r).toLowerCase().includes(q.toLowerCase()));
+  const sc={new:'no',shortlisted:'no',accepted:'yes',rejected:''};
+  m.innerHTML=`<div class="sub"><h2>Applications</h2><span class="crumb">From inldev.in/careers.html</span><span style="flex:1"></span><a class="btn g s" href="careers.html" target="_blank">View page</a><button class="btn g s" onclick="show(true)">↻ Refresh</button><button class="btn s" onclick="csvOf('applications')">Export CSV</button></div>
+  <div class="bar">${['all','new','shortlisted','accepted','rejected'].map(k=>`<button class="btn ${appF===k?'':'g'} s" onclick="appF='${k}';show()">${k[0].toUpperCase()+k.slice(1)} (${cnt(k)})</button>`).join('')}</div>
+  ${L.length?L.map(r=>`<div class="card" style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><b style="font-size:17px">${esc(r.name)}</b> <span class="pill ${sc[r.status]||''}" style="${r.status==='rejected'?'background:rgba(239,68,68,.15);color:var(--bad)':''}">${esc((r.status||'new').toUpperCase())}</span><div class="cs" style="margin:4px 0 0">${esc(r.role)} · ${esc(r.hours)} h/week · ${fmt(r.created)}</div></div>
+   <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:start"><button class="btn g s" onclick="setApp('${r._id}','shortlisted')">Shortlist</button><button class="btn s" onclick="setApp('${r._id}','accepted')">Accept</button><button class="btn r s" onclick="setApp('${r._id}','rejected')">Reject</button><button class="btn g s" onclick="makeStaff('${r._id}')">Make staff</button><button class="btn r s" onclick="delApp('${r._id}')">Delete</button></div></div>
+   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0" class="mono"><div>✉ <a href="mailto:${esc(r.email)}" style="color:var(--acc2)">${esc(r.email)}</a></div><div>💬 ${esc(r.discord)}</div><div>${r.portfolio?`🔗 <a href="${esc(r.portfolio)}" target="_blank" rel="noopener noreferrer" style="color:var(--acc2)">${esc(r.portfolio.replace(/^https?:\/\//,'').slice(0,40))}</a>`:'<span style="color:var(--mut)">no portfolio</span>'}</div></div>
+   <p style="margin:0;color:#C9CDD5;line-height:1.6;white-space:pre-wrap">${esc(r.about)}</p></div>`).join(''):'<div class="card" style="color:var(--mut)">No applications here yet.</div>'}`;
+}
+window.setApp=async(id,st)=>{await db.collection('applications').doc(id).update({status:st});show(true)};
+window.delApp=async id=>{if(confirm('Delete this application?')){await db.collection('applications').doc(id).delete();show(true)}};
+window.makeStaff=async id=>{const r=(cache.applications||[]).find(x=>x._id===id);if(!r)return;const role=prompt(`Give ${r.name} admin-panel access as viewer, moderator or manager?\n(They sign in with ${r.email} — must be a Google account)`,'viewer');if(!role||!['viewer','moderator','manager'].includes(role))return;
+  await db.collection('staff').doc(r.email).set({name:r.name,role,added:firebase.firestore.FieldValue.serverTimestamp()});await db.collection('applications').doc(id).update({status:'accepted'});delete cache.staff;alert(r.name+' added to Staff as '+role);show(true)};
+async function staffTab(m,force){
+  const rows=await get('staff',force);nav();
+  m.innerHTML=`<div class="sub"><h2>Staff</h2><span class="crumb">Who can open this panel</span></div>
+  <div class="card" style="margin-bottom:20px"><div class="ct">Add staff</div><div class="cs">They sign in with this Google account. Viewer = see data · Moderator = also approve/delete reviews · Manager = also see income. Only you can add or remove staff.</div>
+  <div class="bar" style="margin:0"><input id="se" type="email" placeholder="google email"><input id="sn" placeholder="name" style="min-width:160px"><select id="sr" style="background:#1B1E26;color:var(--txt);border:1px solid var(--line);padding:8px;border-radius:6px"><option value="viewer">Viewer</option><option value="moderator">Moderator</option><option value="manager">Manager</option></select><button class="btn" onclick="addStaff()">Add</button><span id="sm" class="err"></span></div></div>
+  <div class="card" style="padding:0">${rows.length?`<table><tr><th>NAME</th><th>EMAIL</th><th>ROLE</th><th>ADDED</th><th></th></tr>${rows.map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(r._id)}</td><td><select onchange="setRole('${esc(r._id)}',this.value)" style="background:#1B1E26;color:var(--txt);border:1px solid var(--line);padding:4px">${['viewer','moderator','manager'].map(x=>`<option ${x===r.role?'selected':''}>${x}</option>`).join('')}</select></td><td>${fmt(r.added)}</td><td><button class="btn r s" onclick="rmStaff('${esc(r._id)}')">Remove</button></td></tr>`).join('')}</table>`:'<div style="padding:20px;color:var(--mut)">No staff yet.</div>'}</div>`;
+}
+window.addStaff=async()=>{const e=se.value.trim().toLowerCase(),n=sn.value.trim(),r=sr.value;if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){sm.textContent='Enter a valid email';return}
+  try{await db.collection('staff').doc(e).set({name:n||e.split('@')[0],role:r,added:firebase.firestore.FieldValue.serverTimestamp()});show(true)}catch(x){sm.textContent=x.message}};
+window.setRole=async(e,r)=>{await db.collection('staff').doc(e).update({role:r});show(true)};
+window.rmStaff=async e=>{if(confirm('Remove '+e+'?')){await db.collection('staff').doc(e).delete();show(true)}};
+async function reviews(m,force){
+  const rows=(await get('reviews',force)).sort((a,b)=>(a.approved-b.approved)||((b.created?.seconds||0)-(a.created?.seconds||0)));nav();
+  m.innerHTML=`<div class="sub"><h2>Reviews</h2><button class="btn g s" onclick="show(true)">REFRESH</button><a class="btn g s" href="reviews.html" target="_blank" style="text-decoration:none">View public page</a></div>`+(rows.length?`<div class="card" style="padding:0"><table><tr><th>STATUS</th><th>APP</th><th>RATING</th><th>NAME</th><th>REVIEW</th><th>DATE</th><th></th></tr>${rows.map(r=>`<tr><td><span class="pill ${r.approved?'yes':'no'}">${r.approved?'LIVE':'PENDING'}</span></td><td>${esc(r.app)}</td><td style="color:var(--acc)">${'★'.repeat(r.rating)}</td><td>${esc(r.name)}</td><td>${esc(r.text)}</td><td>${fmt(r.created)}</td><td style="white-space:nowrap">${!canMod()?'':r.approved?`<button class="btn g s" onclick="mod('${r._id}',false)">Hide</button>`:`<button class="btn s" onclick="mod('${r._id}',true)">Approve</button>`} ${canMod()?`<button class="btn r s" onclick="del('${r._id}')">Delete</button>`:''}</td></tr>`).join('')}</table></div>`:'<div class="card" style="color:var(--mut)">No reviews yet.</div>');
+}
+window.mod=async(id,v)=>{await db.collection('reviews').doc(id).update({approved:v});show(true)};
+window.del=async id=>{if(confirm('Delete this review permanently?')){await db.collection('reviews').doc(id).delete();show(true)}};
+</script>
+</body>
+</html>
